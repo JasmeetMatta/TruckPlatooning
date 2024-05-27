@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>chan joinRequest, leaveRequest;
+</declaration>
+	<template>
+		<name x="5" y="5">Truck</name>
+		<declaration>// Place local declarations here.
+bool hasJoined = false; // Variable to track if the truck has joined the platoon
+clock t; // Clock to measure time-related conditions
+
+
+
+</declaration>
+		<location id="id0" x="42" y="-127">
+			<name x="32" y="-161">Idle</name>
+		</location>
+		<location id="id1" x="-246" y="-110">
+			<name x="-256" y="-144">RequestingJoin</name>
+		</location>
+		<location id="id2" x="-221" y="102">
+			<name x="-280" y="119">Platooning</name>
+		</location>
+		<location id="id3" x="76" y="110">
+			<name x="59" y="127">Leaving</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id4">
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="59" y="-25">leaveRequest?</label>
+		</transition>
+		<transition id="id5">
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-136" y="110">leaveRequest!</label>
+		</transition>
+		<transition id="id6">
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-348" y="-34">joinRequest?</label>
+		</transition>
+		<transition id="id7">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-144" y="-119">joinRequest!</label>
+		</transition>
+	</template>
+	<template>
+		<name>CentralServer</name>
+		<declaration>int pendingRequests = 0; // Counter for the number of pending join requests
+
+</declaration>
+		<location id="id8" x="-59" y="-178">
+			<name x="-69" y="-212">Listening</name>
+		</location>
+		<location id="id9" x="-306" y="-170">
+			<name x="-374" y="-204">Set initial</name>
+		</location>
+		<init ref="id8"/>
+		<transition id="id10">
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-246" y="-136">leaveRequest?</label>
+			<nail x="-263" y="-127"/>
+		</transition>
+		<transition id="id11">
+			<source ref="id9"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-204" y="-246">joinRequest?</label>
+			<nail x="-204" y="-221"/>
+			<nail x="-76" y="-187"/>
+		</transition>
+	</template>
+	<system>Truck t1;
+CentralServer cs;
+
+// List one or more processes to be composed into a system
+system t1, cs;
+</system>
+	<queries>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+	</queries>
+</nta>
