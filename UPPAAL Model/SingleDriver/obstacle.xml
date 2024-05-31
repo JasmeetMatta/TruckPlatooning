@@ -7,8 +7,15 @@
 //    int ObstacleType
 //}
 
+
+//Distance is in Meters
+
+
+const int SAFE_DISTANCE = 10;
+const int Break_Distance = SAFE_DISTANCE- 3;
+int [0,30]Distance;
 int[0,1]obstacle;
-int[3,10]stopingTime;
+
 broadcast chan moving, braking,stoping,slwoMoving;</declaration>
 	<template>
 		<name>obstaclee</name>
@@ -38,16 +45,16 @@ broadcast chan moving, braking,stoping,slwoMoving;</declaration>
 		<transition id="id5">
 			<source ref="id1"/>
 			<target ref="id1"/>
-			<label kind="guard" x="255" y="-374">stopingTime&gt;3</label>
-			<label kind="assignment" x="255" y="-357">stopingTime--</label>
+			<label kind="guard" x="272" y="-382">Distance &gt;1</label>
+			<label kind="assignment" x="348" y="-365">Distance--</label>
 			<nail x="238" y="-382"/>
 			<nail x="272" y="-297"/>
 		</transition>
 		<transition id="id6">
 			<source ref="id1"/>
 			<target ref="id1"/>
-			<label kind="guard" x="-348" y="-425">stopingTime&lt;10</label>
-			<label kind="assignment" x="-348" y="-442">stopingTime++</label>
+			<label kind="guard" x="-340" y="-425">Distance&lt; 15</label>
+			<label kind="assignment" x="-323" y="-408">Distance++</label>
 			<nail x="-289" y="-357"/>
 			<nail x="-170" y="-433"/>
 		</transition>
@@ -55,7 +62,7 @@ broadcast chan moving, braking,stoping,slwoMoving;</declaration>
 			<source ref="id2"/>
 			<target ref="id1"/>
 			<label kind="assignment" x="-357" y="-170">obstacle = 1,
-stopingTime = 4</label>
+Distance = 10</label>
 		</transition>
 		<transition id="id8">
 			<source ref="id0"/>
@@ -132,8 +139,7 @@ stopingTime = 4</label>
 	</template>
 	<template>
 		<name x="5" y="5">MainTruck</name>
-		<declaration>// Place local declarations here.
-clock x;</declaration>
+		<declaration>// Place local declarations here.</declaration>
 		<location id="id22" x="-323" y="-110">
 			<name x="-383" y="-144">StartingPoint</name>
 		</location>
@@ -150,17 +156,15 @@ clock x;</declaration>
 		<transition id="id26">
 			<source ref="id25"/>
 			<target ref="id24"/>
-			<label kind="guard" x="450" y="-25">obstacle&gt;0 and stopingTime&gt;=4</label>
+			<label kind="guard" x="450" y="-25">obstacle&gt;0 and Distance&lt;= SAFE_DISTANCE and Distance&gt;= Break_Distance</label>
 			<label kind="synchronisation" x="535" y="-8">slwoMoving!</label>
-			<label kind="assignment" x="561" y="8">x:=0</label>
 			<nail x="442" y="-8"/>
 		</transition>
 		<transition id="id27">
 			<source ref="id24"/>
 			<target ref="id24"/>
-			<label kind="guard" x="153" y="-399">obstacle &gt;=1 and stopingTime&gt;= 4</label>
+			<label kind="guard" x="153" y="-399">obstacle &gt;=1 and Distance&lt;= SAFE_DISTANCE and Distance&gt;= Break_Distance</label>
 			<label kind="synchronisation" x="187" y="-382">slwoMoving!</label>
-			<label kind="assignment" x="212" y="-365">x:=0</label>
 			<nail x="119" y="-399"/>
 			<nail x="272" y="-280"/>
 		</transition>
@@ -169,23 +173,20 @@ clock x;</declaration>
 			<target ref="id23"/>
 			<label kind="guard" x="-466" y="76">obstacle &lt; 1</label>
 			<label kind="synchronisation" x="-466" y="93">moving!</label>
-			<label kind="assignment" x="-466" y="110">x:=0</label>
 			<nail x="-484" y="153"/>
 			<nail x="-365" y="196"/>
 		</transition>
 		<transition id="id29">
 			<source ref="id24"/>
 			<target ref="id25"/>
-			<label kind="guard" x="42" y="-76">obstacle &gt;=1 and stopingTime &lt; 4</label>
+			<label kind="guard" x="42" y="-76">obstacle &gt;=1 and  Distance &lt; Break_Distance</label>
 			<label kind="synchronisation" x="42" y="-59">stoping!</label>
-			<label kind="assignment" x="38" y="-42">x:=0</label>
 		</transition>
 		<transition id="id30">
 			<source ref="id24"/>
 			<target ref="id23"/>
 			<label kind="guard" x="-178" y="-297">obstacle &lt; 1</label>
 			<label kind="synchronisation" x="-170" y="-280">moving!</label>
-			<label kind="assignment" x="-170" y="-263">x:=0</label>
 			<nail x="-187" y="-212"/>
 		</transition>
 		<transition id="id31">
@@ -193,27 +194,24 @@ clock x;</declaration>
 			<target ref="id23"/>
 			<label kind="guard" x="-101" y="132">obstacle &lt; 1</label>
 			<label kind="synchronisation" x="-101" y="149">moving!</label>
-			<label kind="assignment" x="-101" y="166">x:=0</label>
 			<nail x="-119" y="187"/>
 		</transition>
 		<transition id="id32">
 			<source ref="id23"/>
 			<target ref="id25"/>
-			<label kind="guard" x="-178" y="8">obstacle &gt;=1 and stopingTime &lt; 4</label>
+			<label kind="guard" x="-178" y="8">obstacle &gt;=1 and Distance &lt; Break_Distance</label>
 			<label kind="synchronisation" x="-153" y="25">stoping!</label>
 		</transition>
 		<transition id="id33">
 			<source ref="id23"/>
 			<target ref="id24"/>
-			<label kind="guard" x="-178" y="-136">obstacle &gt;=1 and stopingTime&gt;= 4</label>
+			<label kind="guard" x="-178" y="-136">obstacle &gt;=1 and Distance&lt;= SAFE_DISTANCE and Distance&gt;= Break_Distance</label>
 			<label kind="synchronisation" x="-119" y="-119">braking!</label>
 		</transition>
 		<transition id="id34">
 			<source ref="id22"/>
 			<target ref="id23"/>
-			<label kind="guard" x="-451" y="-85">obstacle &lt;1</label>
 			<label kind="synchronisation" x="-519" y="-85">moving!</label>
-			<label kind="assignment" x="-510" y="-68">x:=0</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
@@ -230,7 +228,7 @@ system Leader,Truck1,Truck2,Truck3,obstacle1;
 		<query>
 			<formula>A[] not deadlock</formula>
 			<comment/>
-			<result outcome="success" type="quality" timestamp="2024-05-17 09:13:34 +0200">
+			<result outcome="success" type="quality" timestamp="2024-05-31 10:52:18 +0200">
 			</result>
 		</query>
 		<query>
