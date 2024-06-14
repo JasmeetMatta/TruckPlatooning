@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
 <nta>
-<declaration>
+	<declaration>
 bool leftLaneAvailable = true; // Initially set to true
 bool rightLaneAvailable = true; // Initially set to true, to allow initial right lane change
 chan changeToLeftLane, changeToRightLane, returnToLane;
@@ -24,29 +24,32 @@ chan changeToLeftLane, changeToRightLane, returnToLane;
 		</location>
 		<init ref="id0"/>
 		<transition id="id4">
-    <source ref="id2"/> <!-- From Right_Lane -->
-    <target ref="id3"/> <!-- To In_Lane -->
-    <label kind="synchronisation" x="-289" y="51">returnToLane!</label>
-    <label kind="assignment" x="-289" y="75">leftLaneAvailable = true;</label> <!-- Ensure left lane is increased -->
-</transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-289" y="51">returnToLane!</label>
+			<label kind="assignment" x="-323" y="68">leftLaneAvailable = true</label>
+			<nail x="-170" y="59"/>
+		</transition>
 		<transition id="id5">
-    <source ref="id3"/> <!-- From In_Lane -->
-    <target ref="id2"/> <!-- To Right_Lane -->
-    <label kind="guard" x="-76" y="85">rightLaneAvailable == true</label>
-    <label kind="synchronisation" x="-85" y="68">changeToRightLane!</label>
-    <label kind="assignment" x="-85" y="100">rightLaneAvailable = false; leftLaneAvailable = true;</label>
-</transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-93" y="17">rightLaneAvailable == true</label>
+			<label kind="synchronisation" x="-102" y="0">changeToRightLane!</label>
+			<label kind="assignment" x="-85" y="34">rightLaneAvailable = false,
+leftLaneAvailable = true</label>
+			<nail x="-119" y="8"/>
+		</transition>
 		<transition id="id6">
 			<source ref="id1"/>
 			<target ref="id3"/>
-			<label kind="synchronisation" x="-399" y="119">returnToLane!</label>
+			<label kind="synchronisation" x="-408" y="127">returnToLane!</label>
 			<nail x="-331" y="76"/>
 		</transition>
 		<transition id="id7">
 			<source ref="id3"/>
 			<target ref="id1"/>
-			<label kind="guard" x="-604" y="-4">leftLaneAvailable == true</label>
-			<label kind="synchronisation" x="-527" y="-25">changeToLeftLane!</label>
+			<label kind="guard" x="-586" y="17">leftLaneAvailable == true</label>
+			<label kind="synchronisation" x="-527" y="-8">changeToLeftLane!</label>
 			<nail x="-383" y="29"/>
 		</transition>
 		<transition id="id8">
@@ -104,7 +107,7 @@ chan changeToLeftLane, changeToRightLane, returnToLane;
 		<query>
 			<formula>A[] not deadlock</formula>
 			<comment/>
-			<result outcome="success" type="quality" timestamp="2024-06-02 15:45:33 +0200">
+			<result outcome="success" type="quality" timestamp="2024-06-06 23:10:05 +0200">
 			</result>
 		</query>
 	</queries>
