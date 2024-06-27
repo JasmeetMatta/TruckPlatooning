@@ -43,7 +43,7 @@ class driveassist:
         print("driveassist")
 
 def main_simulation_loop():
-    scenarios = [TruckPlatooning(), OtherScenario1(), OtherScenario2()]
+    scenarios = [TruckPlatooning(), obstacle(), driveassist()]
     while True:
         scenario = random.choice(scenarios)  # Randomly select a scenario to simulate
         scenario.simulate()
