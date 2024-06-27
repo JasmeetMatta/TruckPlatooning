@@ -33,17 +33,17 @@ class TruckPlatooning:
         self.return_to_lane()
         time.sleep(1)  # Wait for 1 second before the next cycle
 
-# Placeholder for other scenario classes
-class OtherScenario1:
+# Place for other scenario classes
+class obstacle:
     def simulate(self):
-        print("Simulating Scenario 1")
+        print("obstacle ")
 
-class OtherScenario2:
+class driveassist:
     def simulate(self):
-        print("Simulating Scenario 2")
+        print("driveassist")
 
 def main_simulation_loop():
-    scenarios = [TruckPlatooning(), OtherScenario1(), OtherScenario2()]
+    scenarios = [TruckPlatooning(), obstacle(), driveassist()]
     while True:
         scenario = random.choice(scenarios)  # Randomly select a scenario to simulate
         scenario.simulate()
