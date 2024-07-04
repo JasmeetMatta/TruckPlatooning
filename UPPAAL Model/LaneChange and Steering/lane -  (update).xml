@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>
+bool leftLaneAvailable = true; // Initially set to true
+bool rightLaneAvailable = true; // Initially set to true, to allow initial right lane change
+chan changeToLeftLane, changeToRightLane, returnToLane;
+</declaration>
+	<template>
+		<name x="5" y="5">LaneChange</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="-280" y="-161">
+			<name x="-290" y="-195">Start</name>
+		</location>
+		<location id="id1" x="-450" y="153">
+			<name x="-484" y="170">Left_Lane</name>
+		</location>
+		<location id="id2" x="-42" y="144">
+			<name x="-76" y="161">Right_Lane</name>
+		</location>
+		<location id="id3" x="-280" y="-34">
+			<name x="-263" y="-59">In_Lane</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id4">
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-289" y="51">returnToLane!</label>
+			<label kind="assignment" x="-323" y="68">leftLaneAvailable = true</label>
+			<nail x="-170" y="59"/>
+		</transition>
+		<transition id="id5">
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-93" y="17">rightLaneAvailable == true</label>
+			<label kind="synchronisation" x="-102" y="0">changeToRightLane!</label>
+			<label kind="assignment" x="-85" y="34">rightLaneAvailable = false,
+leftLaneAvailable = true</label>
+			<nail x="-119" y="8"/>
+		</transition>
+		<transition id="id6">
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-408" y="127">returnToLane!</label>
+			<nail x="-331" y="76"/>
+		</transition>
+		<transition id="id7">
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-586" y="17">leftLaneAvailable == true</label>
+			<label kind="synchronisation" x="-527" y="-8">changeToLeftLane!</label>
+			<nail x="-383" y="29"/>
+		</transition>
+		<transition id="id8">
+			<source ref="id0"/>
+			<target ref="id3"/>
+		</transition>
+	</template>
+	<template>
+		<name>Steering</name>
+		<declaration>bool inNormalSteering;
+
+</declaration>
+		<location id="id9" x="17" y="-51">
+			<name x="34" y="-68">Normal_Steering</name>
+		</location>
+		<location id="id10" x="255" y="297">
+			<name x="230" y="314">Right_Steer</name>
+		</location>
+		<location id="id11" x="-204" y="306">
+			<name x="-272" y="331">Left_Steer</name>
+		</location>
+		<init ref="id9"/>
+		<transition id="id12">
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-8" y="102">returnToLane?</label>
+			<label kind="assignment" x="-34" y="119">inNormalSteering = true</label>
+			<nail x="93" y="85"/>
+		</transition>
+		<transition id="id13">
+			<source ref="id9"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="153" y="42">changeToRightLane?</label>
+			<label kind="assignment" x="127" y="25">inNormalSteering = false</label>
+			<nail x="144" y="51"/>
+		</transition>
+		<transition id="id14">
+			<source ref="id11"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-127" y="238">returnToLane?</label>
+			<label kind="assignment" x="-144" y="255">inNormalSteering = true</label>
+			<nail x="-50" y="179"/>
+		</transition>
+		<transition id="id15">
+			<source ref="id9"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-246" y="42">changeToLeftLane?</label>
+			<label kind="assignment" x="-340" y="85">inNormalSteering = false</label>
+			<nail x="-119" y="85"/>
+		</transition>
+	</template>
+	<system>system LaneChange, Steering;
+</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2024-06-06 23:10:05 +0200">
+			</result>
+		</query>
+	</queries>
+</nta>
